@@ -106,14 +106,14 @@ class _EditMoviePageState extends State<EditMoviePage> {
       if (mounted) {
         Navigator.of(context).pop(true);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Movie updated successfully')),
+          const SnackBar(content: Text('Movie updated')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Failed to update movie'),
+            content: Text('Could not update movie'),
             backgroundColor: Colors.red,
           ),
         );

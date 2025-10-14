@@ -23,9 +23,9 @@ class FirestoreUserRepository implements UserRepository {
           .doc(user.id)
           .set(user.toMap());
     } on FirebaseException catch (e) {
-      throw Exception('Failed to create user profile: ${e.message}');
+      throw Exception('Could not create user profile: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to create user profile');
+      throw Exception('Could not create user profile');
     }
   }
 

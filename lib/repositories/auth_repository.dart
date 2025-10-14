@@ -33,7 +33,7 @@ class FirebaseAuthRepository implements AuthRepository {
     } on FirebaseAuthException catch (e) {
       return AuthFailure(_getErrorMessage(e), _getErrorType(e));
     } catch (e) {
-      return AuthFailure('An unexpected error occurred', AuthErrorType.unknown);
+      return AuthFailure('Something went wrong', AuthErrorType.unknown);
     }
   }
 
@@ -54,7 +54,7 @@ class FirebaseAuthRepository implements AuthRepository {
     } on FirebaseAuthException catch (e) {
       return AuthFailure(_getErrorMessage(e), _getErrorType(e));
     } catch (e) {
-      return AuthFailure('An unexpected error occurred', AuthErrorType.unknown);
+      return AuthFailure('Something went wrong', AuthErrorType.unknown);
     }
   }
 
@@ -66,7 +66,7 @@ class FirebaseAuthRepository implements AuthRepository {
     } on FirebaseAuthException catch (e) {
       return AuthFailure(_getErrorMessage(e), _getErrorType(e));
     } catch (e) {
-      return AuthFailure('An unexpected error occurred', AuthErrorType.unknown);
+      return AuthFailure('Something went wrong', AuthErrorType.unknown);
     }
   }
 
@@ -90,7 +90,7 @@ class FirebaseAuthRepository implements AuthRepository {
       case 'user-disabled':
         return 'This account has been disabled';
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later';
+        return 'Too many attempts. Try again later';
       default:
         return e.message ?? 'Authentication failed';
     }

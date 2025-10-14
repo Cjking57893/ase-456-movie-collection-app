@@ -51,7 +51,7 @@ class _MovieListPageState extends State<MovieListPage> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = 'Failed to load movies: ${e.toString()}';
+          _errorMessage = 'Could not load movies';
           _isLoading = false;
         });
       }
@@ -66,7 +66,7 @@ class _MovieListPageState extends State<MovieListPage> {
         await _loadMovies();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Movie deleted successfully')),
+            const SnackBar(content: Text('Movie deleted')),
           );
         }
       }
@@ -74,7 +74,7 @@ class _MovieListPageState extends State<MovieListPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Failed to delete movie'),
+            content: Text('Could not delete movie'),
             backgroundColor: Colors.red,
           ),
         );

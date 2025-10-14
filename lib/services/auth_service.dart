@@ -65,7 +65,7 @@ class AuthService {
         await _userRepository.createUser(user);
       } catch (e) {
         await _authRepository.signOut();
-        return AuthFailure('Failed to complete account setup', AuthErrorType.unknown);
+        return AuthFailure('Could not sign up', AuthErrorType.unknown);
       }
     }
 

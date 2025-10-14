@@ -88,14 +88,14 @@ class _AddMoviePageState extends State<AddMoviePage> {
       if (mounted) {
         Navigator.of(context).pop(true);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Movie added successfully')),
+          const SnackBar(content: Text('Movie added')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Failed to add movie'),
+            content: Text('Could not add movie'),
             backgroundColor: Colors.red,
           ),
         );
