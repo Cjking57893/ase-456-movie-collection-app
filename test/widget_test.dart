@@ -6,7 +6,7 @@ import 'package:movie_collection_app/main.dart';
 void main() {
   testWidgets('App loads successfully', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-    
+
     expect(find.byType(MaterialApp), findsOneWidget);
   });
 }

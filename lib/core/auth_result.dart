@@ -8,7 +8,7 @@ class AuthSuccess extends AuthResult {
 class AuthFailure extends AuthResult {
   final String message;
   final AuthErrorType type;
-  
+
   AuthFailure(this.message, this.type);
 }
 

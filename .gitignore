@@ -7,6 +7,18 @@
 .buildlog/
 .history
 
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+.env.staging
+*.key
+api_keys.dart
+secrets.dart
+
+# Firebase
+firebase_app_id_file.json
+
 
 
 # Flutter repo-specific

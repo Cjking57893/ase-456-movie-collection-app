@@ -14,7 +14,7 @@ class FirestoreMovieRepository implements MovieRepository {
   static const String _collectionName = 'movies';
 
   FirestoreMovieRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Future<void> addMovie(Movie movie) async {
@@ -33,9 +33,7 @@ class FirestoreMovieRepository implements MovieRepository {
           .orderBy('title')
           .get();
 
-      return snapshot.docs
-          .map((doc) => Movie.fromMap(doc.data()))
-          .toList();
+      return snapshot.docs.map((doc) => Movie.fromMap(doc.data())).toList();
     } catch (e) {
       final snapshot = await _firestore
           .collection(_collectionName)
@@ -45,7 +43,7 @@ class FirestoreMovieRepository implements MovieRepository {
       final movies = snapshot.docs
           .map((doc) => Movie.fromMap(doc.data()))
           .toList();
-      
+
       movies.sort((a, b) => a.title.compareTo(b.title));
       return movies;
     }
@@ -61,18 +59,12 @@ class FirestoreMovieRepository implements MovieRepository {
 
   @override
   Future<void> deleteMovie(String movieId) async {
-    await _firestore
-        .collection(_collectionName)
-        .doc(movieId)
-        .delete();
+    await _firestore.collection(_collectionName).doc(movieId).delete();
   }
 
   @override
   Future<Movie?> getMovie(String movieId) async {
-    final doc = await _firestore
-        .collection(_collectionName)
-        .doc(movieId)
-        .get();
+    final doc = await _firestore.collection(_collectionName).doc(movieId).get();
 
     if (doc.exists) {
       return Movie.fromMap(doc.data()!);

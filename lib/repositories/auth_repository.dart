@@ -3,7 +3,11 @@ import '../core/auth_result.dart';
 
 abstract class AuthRepository {
   Future<AuthResult> signIn({required String email, required String password});
-  Future<AuthResult> signUp({required String email, required String password, required String displayName});
+  Future<AuthResult> signUp({
+    required String email,
+    required String password,
+    required String displayName,
+  });
   Future<AuthResult> resetPassword(String email);
   Future<void> signOut();
   Stream<User?> get authStateChanges;
@@ -12,8 +16,8 @@ abstract class AuthRepository {
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _auth;
-  
-  FirebaseAuthRepository({FirebaseAuth? firebaseAuth}) 
+
+  FirebaseAuthRepository({FirebaseAuth? firebaseAuth})
     : _auth = firebaseAuth ?? FirebaseAuth.instance;
 
   @override
@@ -23,7 +27,10 @@ class FirebaseAuthRepository implements AuthRepository {
   User? get currentUser => _auth.currentUser;
 
   @override
-  Future<AuthResult> signIn({required String email, required String password}) async {
+  Future<AuthResult> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -39,16 +46,16 @@ class FirebaseAuthRepository implements AuthRepository {
 
   @override
   Future<AuthResult> signUp({
-    required String email, 
-    required String password, 
-    required String displayName
+    required String email,
+    required String password,
+    required String displayName,
   }) async {
     try {
       final result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
+
       await result.user?.updateDisplayName(displayName);
       return AuthSuccess(result.user!.uid);
     } on FirebaseAuthException catch (e) {

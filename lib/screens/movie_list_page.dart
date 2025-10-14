@@ -3,6 +3,7 @@ import '../core/service_locator.dart';
 import '../models/movie.dart';
 import 'add_movie_page.dart';
 import 'edit_movie_page.dart';
+import 'movie_search_page.dart';
 
 class MovieListPage extends StatefulWidget {
   const MovieListPage({super.key});
@@ -11,7 +12,8 @@ class MovieListPage extends StatefulWidget {
   State<MovieListPage> createState() => _MovieListPageState();
 }
 
-class _MovieListPageState extends State<MovieListPage> {
+class _MovieListPageState extends State<MovieListPage>
+    with WidgetsBindingObserver {
   final _movieService = ServiceLocator().movieService;
   final _authService = ServiceLocator().authService;
   List<Movie> _movies = [];
@@ -21,7 +23,22 @@ class _MovieListPageState extends State<MovieListPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadMovies();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _loadMovies();
+    }
   }
 
   Future<void> _loadMovies() async {
@@ -65,9 +82,9 @@ class _MovieListPageState extends State<MovieListPage> {
         await _movieService.deleteMovie(movieId, userId);
         await _loadMovies();
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Movie deleted')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Movie deleted')));
         }
       }
     } catch (e) {
@@ -94,20 +111,48 @@ class _MovieListPageState extends State<MovieListPage> {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadMovies,
+            tooltip: 'Refresh Movies',
+          ),
+        ],
       ),
       body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AddMoviePage()),
-          );
-          if (result == true) {
-            _loadMovies();
-          }
-        },
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const MovieSearchPage(),
+                ),
+              );
+              _loadMovies();
+            },
+            heroTag: 'search',
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.search),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () async {
+              final result = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AddMoviePage()),
+              );
+              if (result == true) {
+                _loadMovies();
+              }
+            },
+            heroTag: 'add',
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
@@ -126,10 +171,7 @@ class _MovieListPageState extends State<MovieListPage> {
             const SizedBox(height: 16),
             Text(_errorMessage!),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadMovies,
-              child: const Text('Retry'),
-            ),
+            ElevatedButton(onPressed: _loadMovies, child: const Text('Retry')),
           ],
         ),
       );
@@ -217,13 +259,40 @@ class _MovieTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.red,
-          child: Text(
-            movie.title.isNotEmpty ? movie.title[0].toUpperCase() : 'M',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
+        leading: movie.posterUrl != null && movie.posterUrl!.isNotEmpty
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  movie.posterUrl!,
+                  width: 40,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return CircleAvatar(
+                      backgroundColor: Colors.red,
+                      child: Text(
+                        movie.title.isNotEmpty
+                            ? movie.title[0].toUpperCase()
+                            : 'M',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            : CircleAvatar(
+                backgroundColor: Colors.red,
+                child: Text(
+                  movie.title.isNotEmpty ? movie.title[0].toUpperCase() : 'M',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
         title: Text(movie.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

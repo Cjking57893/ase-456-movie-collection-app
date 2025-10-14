@@ -4,7 +4,7 @@ import '../models/movie.dart';
 
 class EditMoviePage extends StatefulWidget {
   final Movie movie;
-  
+
   const EditMoviePage({super.key, required this.movie});
 
   @override
@@ -21,7 +21,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
   late final TextEditingController _ratingController;
   late final TextEditingController _personalRatingController;
   late final TextEditingController _notesController;
-  
+
   final _movieService = ServiceLocator().movieService;
   final _authService = ServiceLocator().authService;
 
@@ -34,14 +34,26 @@ class _EditMoviePageState extends State<EditMoviePage> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.movie.title);
-    _directorController = TextEditingController(text: widget.movie.director ?? '');
-    _descriptionController = TextEditingController(text: widget.movie.description ?? '');
-    _releaseYearController = TextEditingController(text: widget.movie.releaseYear?.toString() ?? '');
-    _runtimeController = TextEditingController(text: widget.movie.runtime?.toString() ?? '');
-    _ratingController = TextEditingController(text: widget.movie.rating?.toString() ?? '');
-    _personalRatingController = TextEditingController(text: widget.movie.personalRating?.toString() ?? '');
+    _directorController = TextEditingController(
+      text: widget.movie.director ?? '',
+    );
+    _descriptionController = TextEditingController(
+      text: widget.movie.description ?? '',
+    );
+    _releaseYearController = TextEditingController(
+      text: widget.movie.releaseYear?.toString() ?? '',
+    );
+    _runtimeController = TextEditingController(
+      text: widget.movie.runtime?.toString() ?? '',
+    );
+    _ratingController = TextEditingController(
+      text: widget.movie.rating?.toString() ?? '',
+    );
+    _personalRatingController = TextEditingController(
+      text: widget.movie.personalRating?.toString() ?? '',
+    );
     _notesController = TextEditingController(text: widget.movie.notes ?? '');
-    
+
     _selectedFormat = widget.movie.format;
     _selectedLocation = widget.movie.storageLocation;
     _isWatched = widget.movie.isWatched;
@@ -75,8 +87,8 @@ class _EditMoviePageState extends State<EditMoviePage> {
         movieId: widget.movie.id,
         userId: userId,
         title: _titleController.text.trim(),
-        description: _descriptionController.text.trim().isEmpty 
-            ? null 
+        description: _descriptionController.text.trim().isEmpty
+            ? null
             : _descriptionController.text.trim(),
         genres: widget.movie.genres,
         releaseYear: _releaseYearController.text.trim().isEmpty
@@ -105,9 +117,9 @@ class _EditMoviePageState extends State<EditMoviePage> {
 
       if (mounted) {
         Navigator.of(context).pop(true);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Movie updated')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Movie updated')));
       }
     } catch (e) {
       if (mounted) {
@@ -155,13 +167,13 @@ class _EditMoviePageState extends State<EditMoviePage> {
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Please enter a title';
+                  return 'Enter a title';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _directorController,
               decoration: const InputDecoration(
@@ -170,7 +182,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -180,7 +192,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               maxLines: 3,
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -207,7 +219,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -234,7 +246,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             DropdownButtonFormField<MovieFormat>(
               initialValue: _selectedFormat,
               decoration: const InputDecoration(
@@ -252,7 +264,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             DropdownButtonFormField<StorageLocation>(
               initialValue: _selectedLocation,
               decoration: const InputDecoration(
@@ -270,7 +282,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             SwitchListTile(
               title: const Text('Watched'),
               value: _isWatched,
@@ -279,7 +291,7 @@ class _EditMoviePageState extends State<EditMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _notesController,
               decoration: const InputDecoration(
@@ -297,7 +309,11 @@ class _EditMoviePageState extends State<EditMoviePage> {
   String _formatLocationName(String name) {
     return name
         .split(RegExp(r'(?=[A-Z])'))
-        .map((word) => word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .map(
+          (word) => word.isEmpty
+              ? ''
+              : word[0].toUpperCase() + word.substring(1).toLowerCase(),
+        )
         .join(' ');
   }
 }

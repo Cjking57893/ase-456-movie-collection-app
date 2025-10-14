@@ -17,7 +17,7 @@ class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -60,29 +60,20 @@ class _SignupPageState extends State<SignupPage> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -93,7 +84,7 @@ class _SignupPageState extends State<SignupPage> {
               children: [
                 const _Header(),
                 const SizedBox(height: 48),
-                
+
                 TextFormField(
                   controller: _nameController,
                   textCapitalization: TextCapitalization.words,
@@ -105,7 +96,7 @@ class _SignupPageState extends State<SignupPage> {
                   validator: Validators.displayName,
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -117,7 +108,7 @@ class _SignupPageState extends State<SignupPage> {
                   validator: Validators.email,
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
@@ -126,7 +117,9 @@ class _SignupPageState extends State<SignupPage> {
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() => _obscurePassword = !_obscurePassword);
@@ -137,7 +130,7 @@ class _SignupPageState extends State<SignupPage> {
                   validator: Validators.password,
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: _obscureConfirmPassword,
@@ -146,24 +139,29 @@ class _SignupPageState extends State<SignupPage> {
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _obscureConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
-                        setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                        setState(
+                          () => _obscureConfirmPassword =
+                              !_obscureConfirmPassword,
+                        );
                       },
                     ),
                     border: const OutlineInputBorder(),
                   ),
-                  validator: (value) => Validators.confirmPassword(value, _passwordController.text),
+                  validator: (value) => Validators.confirmPassword(
+                    value,
+                    _passwordController.text,
+                  ),
                 ),
                 const SizedBox(height: 24),
-                
-                _SignUpButton(
-                  isLoading: _isLoading,
-                  onPressed: _signUp,
-                ),
+
+                _SignUpButton(isLoading: _isLoading, onPressed: _signUp),
                 const SizedBox(height: 32),
-                
+
                 const _SignInLink(),
               ],
             ),
@@ -181,26 +179,16 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        Icon(
-          Icons.movie,
-          size: 80,
-          color: Colors.red,
-        ),
+        Icon(Icons.movie, size: 80, color: Colors.red),
         SizedBox(height: 32),
         Text(
           'Create Account',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
         Text(
           'Start your movie collection journey',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
     );
@@ -208,10 +196,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SignUpButton extends StatelessWidget {
-  const _SignUpButton({
-    required this.isLoading,
-    required this.onPressed,
-  });
+  const _SignUpButton({required this.isLoading, required this.onPressed});
 
   final bool isLoading;
   final VoidCallback onPressed;

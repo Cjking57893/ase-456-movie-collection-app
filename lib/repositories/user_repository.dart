@@ -13,7 +13,7 @@ class FirestoreUserRepository implements UserRepository {
   static const String _collectionName = 'users';
 
   FirestoreUserRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Future<void> createUser(User user) async {
@@ -31,11 +31,8 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Future<User?> getUser(String userId) async {
-    final doc = await _firestore
-        .collection(_collectionName)
-        .doc(userId)
-        .get();
-    
+    final doc = await _firestore.collection(_collectionName).doc(userId).get();
+
     if (doc.exists) {
       return User.fromMap(doc.data()!);
     }
@@ -52,9 +49,6 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Future<void> deleteUser(String userId) async {
-    await _firestore
-        .collection(_collectionName)
-        .doc(userId)
-        .delete();
+    await _firestore.collection(_collectionName).doc(userId).delete();
   }
 }

@@ -12,10 +12,10 @@ class AuthService {
   AuthService({
     required AuthRepository authRepository,
     required UserRepository userRepository,
-  })  : _authRepository = authRepository,
-        _userRepository = userRepository;
+  }) : _authRepository = authRepository,
+       _userRepository = userRepository;
 
-  Stream<firebase_auth.User?> get authStateChanges => 
+  Stream<firebase_auth.User?> get authStateChanges =>
       _authRepository.authStateChanges;
 
   firebase_auth.User? get currentUser => _authRepository.currentUser;
@@ -26,10 +26,7 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    return await _authRepository.signIn(
-      email: email,
-      password: password,
-    );
+    return await _authRepository.signIn(email: email, password: password);
   }
 
   Future<AuthResult> signUp({

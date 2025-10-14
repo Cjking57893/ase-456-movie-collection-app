@@ -33,7 +33,7 @@ class MovieService {
   }) async {
     final movieId = DateTime.now().millisecondsSinceEpoch.toString();
     final now = DateTime.now();
-    
+
     final movie = Movie(
       id: movieId,
       userId: userId,

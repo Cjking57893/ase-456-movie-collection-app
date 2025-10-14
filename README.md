@@ -1,16 +1,25 @@
-# movie_collection_app
+# Movie Collection App
 
-A new Flutter project.
+A Flutter app for managing your personal movie collection.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- User authentication with Firebase
+- Add, edit, and delete movies from your collection
+- Search TMDB database and import movie details
+- View movie posters and information
+- Organize by format (DVD, Blu-ray) and storage location
 
-A few resources to get you started if this is your first Flutter project:
+## Setup
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repository
+2. Run `flutter pub get`
+3. Set up Firebase (see firebase_options.dart)
+4. Add your TMDB API key in the app settings
+5. Run `flutter run`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dependencies
+
+- Firebase Auth & Firestore for user data
+- HTTP package for TMDB API calls
+- Material 3 design system

@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _obscurePassword = true;
 
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _resetPassword() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      _showError('Please enter your email first');
+      _showError('Enter your email first');
       return;
     }
 
@@ -66,19 +66,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
     );
   }
 
@@ -95,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const _Header(),
                 const SizedBox(height: 48),
-                
+
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -107,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   validator: Validators.email,
                 ),
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
@@ -116,7 +110,9 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() => _obscurePassword = !_obscurePassword);
@@ -127,19 +123,16 @@ class _LoginPageState extends State<LoginPage> {
                   validator: Validators.password,
                 ),
                 const SizedBox(height: 24),
-                
-                _SignInButton(
-                  isLoading: _isLoading,
-                  onPressed: _signIn,
-                ),
+
+                _SignInButton(isLoading: _isLoading, onPressed: _signIn),
                 const SizedBox(height: 16),
-                
+
                 TextButton(
                   onPressed: _resetPassword,
                   child: const Text('Forgot Password?'),
                 ),
                 const SizedBox(height: 32),
-                
+
                 _SignUpLink(),
               ],
             ),
@@ -157,26 +150,16 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        Icon(
-          Icons.movie,
-          size: 80,
-          color: Colors.red,
-        ),
+        Icon(Icons.movie, size: 80, color: Colors.red),
         SizedBox(height: 32),
         Text(
           'Welcome Back',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
         Text(
           'Sign in to your movie collection',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
     );
@@ -184,10 +167,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SignInButton extends StatelessWidget {
-  const _SignInButton({
-    required this.isLoading,
-    required this.onPressed,
-  });
+  const _SignInButton({required this.isLoading, required this.onPressed});
 
   final bool isLoading;
   final VoidCallback onPressed;
@@ -220,11 +200,9 @@ class _SignUpLink extends StatelessWidget {
         const Text("Don't have an account? "),
         TextButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SignupPage(),
-              ),
-            );
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => const SignupPage()));
           },
           child: const Text('Sign Up'),
         ),

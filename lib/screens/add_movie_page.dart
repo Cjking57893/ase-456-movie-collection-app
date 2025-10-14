@@ -19,7 +19,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
   final _ratingController = TextEditingController();
   final _personalRatingController = TextEditingController();
   final _notesController = TextEditingController();
-  
+
   final _movieService = ServiceLocator().movieService;
   final _authService = ServiceLocator().authService;
 
@@ -57,8 +57,8 @@ class _AddMoviePageState extends State<AddMoviePage> {
       await _movieService.addMovie(
         userId: userId,
         title: _titleController.text.trim(),
-        description: _descriptionController.text.trim().isEmpty 
-            ? null 
+        description: _descriptionController.text.trim().isEmpty
+            ? null
             : _descriptionController.text.trim(),
         genres: _genres,
         releaseYear: _releaseYearController.text.trim().isEmpty
@@ -87,9 +87,9 @@ class _AddMoviePageState extends State<AddMoviePage> {
 
       if (mounted) {
         Navigator.of(context).pop(true);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Movie added')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Movie added')));
       }
     } catch (e) {
       if (mounted) {
@@ -137,13 +137,13 @@ class _AddMoviePageState extends State<AddMoviePage> {
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Please enter a title';
+                  return 'Enter a title';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _directorController,
               decoration: const InputDecoration(
@@ -152,7 +152,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -162,7 +162,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               maxLines: 3,
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -189,7 +189,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -216,7 +216,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             DropdownButtonFormField<MovieFormat>(
               initialValue: _selectedFormat,
               decoration: const InputDecoration(
@@ -234,7 +234,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             DropdownButtonFormField<StorageLocation>(
               initialValue: _selectedLocation,
               decoration: const InputDecoration(
@@ -252,7 +252,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             SwitchListTile(
               title: const Text('Watched'),
               value: _isWatched,
@@ -261,7 +261,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             TextFormField(
               controller: _notesController,
               decoration: const InputDecoration(
@@ -279,7 +279,11 @@ class _AddMoviePageState extends State<AddMoviePage> {
   String _formatLocationName(String name) {
     return name
         .split(RegExp(r'(?=[A-Z])'))
-        .map((word) => word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .map(
+          (word) => word.isEmpty
+              ? ''
+              : word[0].toUpperCase() + word.substring(1).toLowerCase(),
+        )
         .join(' ');
   }
 }
