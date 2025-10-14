@@ -1,4 +1,4 @@
-enum MovieFormat { dvd, bluray, digital, vhs, fourk }
+enum MovieFormat { dvd, bluray }
 
 enum StorageLocation {
   livingRoom,
@@ -7,12 +7,12 @@ enum StorageLocation {
   attic,
   office,
   storage,
-  digital,
   other,
 }
 
 class Movie {
   final String id;
+  final String userId;
   final String title;
   final String? description;
   final List<String> genres;
@@ -34,6 +34,7 @@ class Movie {
 
   const Movie({
     required this.id,
+    required this.userId,
     required this.title,
     this.description,
     this.genres = const [],
@@ -57,6 +58,7 @@ class Movie {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'userId': userId,
       'title': title,
       'description': description,
       'genres': genres,
@@ -81,6 +83,7 @@ class Movie {
   factory Movie.fromMap(Map<String, dynamic> map) {
     return Movie(
       id: map['id'] ?? '',
+      userId: map['userId'] ?? '',
       title: map['title'] ?? '',
       description: map['description'],
       genres: List<String>.from(map['genres'] ?? []),
@@ -116,6 +119,7 @@ class Movie {
 
   Movie copyWith({
     String? id,
+    String? userId,
     String? title,
     String? description,
     List<String>? genres,
@@ -137,6 +141,7 @@ class Movie {
   }) {
     return Movie(
       id: id ?? this.id,
+      userId: userId ?? this.userId,
       title: title ?? this.title,
       description: description ?? this.description,
       genres: genres ?? this.genres,
