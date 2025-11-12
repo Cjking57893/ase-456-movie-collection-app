@@ -4,7 +4,6 @@ import '../config/api_config.dart';
 import '../core/service_locator.dart';
 import '../models/tmdb_models.dart';
 import '../models/movie.dart';
-import 'api_key_setup_page.dart';
 
 class MovieSearchPage extends StatefulWidget {
   const MovieSearchPage({super.key});
@@ -30,7 +29,6 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   @override
   void initState() {
     super.initState();
-    _checkApiKeySetup();
   }
 
   @override
@@ -38,25 +36,6 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     _searchController.dispose();
     _debounceTimer?.cancel();
     super.dispose();
-  }
-
-  void _checkApiKeySetup() {
-    if (!ApiConfig.hasApiKey) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showApiKeySetup();
-      });
-    }
-  }
-
-  Future<void> _showApiKeySetup() async {
-    final result = await Navigator.push<bool>(
-      context,
-      MaterialPageRoute(builder: (context) => const ApiKeySetupPage()),
-    );
-
-    if (result != true && mounted) {
-      Navigator.of(context).pop();
-    }
   }
 
   void _onSearchChanged(String query) {
@@ -95,11 +74,6 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   }
 
   Future<void> _search(String query) async {
-    if (!ApiConfig.hasApiKey) {
-      _showApiKeySetup();
-      return;
-    }
-
     _lastSearchQuery = query;
 
     try {
@@ -292,14 +266,6 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
             Navigator.of(context).pop(_hasImportedMovies);
           },
         ),
-        actions: [
-          if (!ApiConfig.hasApiKey)
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: _showApiKeySetup,
-              tooltip: 'Setup API Key',
-            ),
-        ],
       ),
       body: Column(
         children: [

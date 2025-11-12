@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConfig {
   static const String tmdbBaseUrl = 'https://api.themoviedb.org/3';
   static const String tmdbImageBaseUrl = 'https://image.tmdb.org/t/p';
@@ -10,23 +12,9 @@ class ApiConfig {
   static const String backdropSizeMedium = 'w780';
   static const String backdropSizeLarge = 'w1280';
 
-  static const String _tmdbApiKey = String.fromEnvironment(
-    'TMDB_API_KEY',
-    defaultValue: '',
-  );
-
-  static String? _runtimeApiKey;
-
-  static void setApiKey(String apiKey) {
-    _runtimeApiKey = apiKey;
-  }
-
+  /// Gets the TMDB API key from the .env file
   static String? get tmdbApiKey {
-    return _runtimeApiKey?.isNotEmpty == true
-        ? _runtimeApiKey
-        : _tmdbApiKey.isNotEmpty
-        ? _tmdbApiKey
-        : null;
+    return dotenv.env['TMDB_API_KEY'];
   }
 
   static bool get hasApiKey => tmdbApiKey != null && tmdbApiKey!.isNotEmpty;
