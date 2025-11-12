@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../config/api_config.dart';
 import '../core/service_locator.dart';
 
 class ApiKeySetupPage extends StatefulWidget {
@@ -37,11 +36,10 @@ class _ApiKeySetupPageState extends State<ApiKeySetupPage> {
       final isValid = await _tmdbService.validateApiKey(apiKey);
 
       if (isValid) {
-        ApiConfig.setApiKey(apiKey);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('API key saved'),
+              content: Text('API key validated'),
               backgroundColor: Colors.green,
             ),
           );

@@ -159,9 +159,6 @@ class TmdbService {
 
   Future<bool> validateApiKey(String apiKey) async {
     try {
-      final originalKey = ApiConfig.tmdbApiKey;
-      ApiConfig.setApiKey(apiKey);
-
       final response = await _client
           .get(
             Uri.parse('${ApiConfig.tmdbBaseUrl}/configuration?api_key=$apiKey'),
@@ -172,15 +169,8 @@ class TmdbService {
           )
           .timeout(const Duration(seconds: 5));
 
-      final isValid = response.statusCode == 200;
-
-      if (!isValid) {
-        ApiConfig.setApiKey(originalKey ?? '');
-      }
-
-      return isValid;
+      return response.statusCode == 200;
     } catch (e) {
-      ApiConfig.setApiKey('');
       return false;
     }
   }
