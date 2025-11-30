@@ -5,6 +5,7 @@ import 'add_movie_page.dart';
 import 'edit_movie_page.dart';
 import 'movie_search_page.dart';
 import 'wishlist_page.dart';
+import 'summary_page.dart';
 
 class MovieListPage extends StatefulWidget {
   const MovieListPage({super.key});
@@ -113,10 +114,58 @@ class _MovieListPageState extends State<MovieListPage>
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadMovies,
-            tooltip: 'Refresh Movies',
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'More options',
+            onSelected: (value) {
+              if (value == 'refresh') {
+                _loadMovies();
+              } else if (value == 'summary') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SummaryPage(),
+                  ),
+                );
+              } else if (value == 'wishlist') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const WishlistPage(),
+                  ),
+                );
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'summary',
+                child: Row(
+                  children: [
+                    Icon(Icons.bar_chart, size: 20),
+                    SizedBox(width: 12),
+                    Text('Summary'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'wishlist',
+                child: Row(
+                  children: [
+                    Icon(Icons.playlist_add, size: 20),
+                    SizedBox(width: 12),
+                    Text('Wishlist'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'refresh',
+                child: Row(
+                  children: [
+                    Icon(Icons.refresh, size: 20),
+                    SizedBox(width: 12),
+                    Text('Refresh'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
