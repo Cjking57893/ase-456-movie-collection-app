@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import '../config/api_config.dart';
 import '../models/tmdb_models.dart';
 
+/// Handles communication with The Movie Database (TMDB) API
+/// Provides movie search, details, and discovery functionality
 class TmdbService {
   final http.Client _client;
 
@@ -180,6 +182,7 @@ class TmdbService {
   }
 }
 
+/// Exception thrown when TMDB API operations fail
 class TmdbException implements Exception {
   final String message;
 

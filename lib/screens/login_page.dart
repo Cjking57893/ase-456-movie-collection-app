@@ -4,6 +4,7 @@ import '../core/service_locator.dart';
 import '../utils/validators.dart';
 import 'signup_page.dart';
 
+/// Login page for existing users
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

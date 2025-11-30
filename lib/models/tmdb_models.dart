@@ -1,3 +1,6 @@
+/// Data models for The Movie Database (TMDB) API responses
+
+/// Represents a movie from TMDB search results
 class TmdbMovie {
   final int id;
   final String title;

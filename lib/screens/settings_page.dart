@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import '../main.dart';
 
+/// Settings page for app preferences and account management
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 

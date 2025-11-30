@@ -6,6 +6,7 @@ import '../models/tmdb_models.dart';
 import '../models/movie.dart';
 import '../models/wishlist.dart';
 
+/// Page for searching and importing movies from TMDB
 class MovieSearchPage extends StatefulWidget {
   const MovieSearchPage({super.key});
 

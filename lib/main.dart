@@ -10,18 +10,15 @@ import 'screens/auth_wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables from .env file
   await dotenv.load(fileName: '.env');
-
   GlobalErrorHandler.initialize();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   ServiceLocator().setup();
 
   runApp(const MyApp());
 }
 
+/// Root application widget with theme management
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

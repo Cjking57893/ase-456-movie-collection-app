@@ -4,6 +4,7 @@ import '../core/service_locator.dart';
 import 'login_page.dart';
 import 'home_page.dart';
 
+/// Wrapper that displays login or home page based on auth state
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 
+/// Page for setting up TMDB API key configuration
 class ApiKeySetupPage extends StatefulWidget {
   const ApiKeySetupPage({super.key});
 

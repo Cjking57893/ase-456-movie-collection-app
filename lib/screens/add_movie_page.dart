@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import '../models/movie.dart';
 
+/// Page for adding a new movie to the collection
 class AddMoviePage extends StatefulWidget {
   const AddMoviePage({super.key});
 
@@ -86,10 +87,10 @@ class _AddMoviePageState extends State<AddMoviePage> {
       );
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Movie added')),
+        );
         Navigator.of(context).pop(true);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Movie added')));
       }
     } catch (e) {
       if (mounted) {

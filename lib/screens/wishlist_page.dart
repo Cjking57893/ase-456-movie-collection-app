@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import '../models/wishlist.dart';
 
+/// Page displaying and managing the user's movie wishlist
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
 

@@ -4,6 +4,7 @@ import '../core/constants.dart';
 import '../core/service_locator.dart';
 import '../utils/validators.dart';
 
+/// Registration page for new users
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 

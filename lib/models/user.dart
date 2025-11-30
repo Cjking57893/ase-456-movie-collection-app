@@ -1,5 +1,6 @@
 import 'wishlist.dart';
 
+/// Represents a user account with movie collection and wishlist
 class User {
   final String id;
   final String email;

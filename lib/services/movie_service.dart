@@ -2,6 +2,8 @@ import '../models/movie.dart';
 import '../repositories/movie_repository.dart';
 import '../repositories/user_repository.dart';
 
+/// Manages movie collection operations including CRUD operations
+/// Coordinates between movie storage and user movie tracking
 class MovieService {
   final MovieRepository _movieRepository;
   final UserRepository _userRepository;

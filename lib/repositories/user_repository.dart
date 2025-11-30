@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
 
+/// Repository interface for user profile operations
 abstract class UserRepository {
   Future<void> createUser(User user);
   Future<User?> getUser(String userId);
@@ -8,6 +9,8 @@ abstract class UserRepository {
   Future<void> deleteUser(String userId);
 }
 
+/// Firestore implementation of UserRepository
+/// Stores user profiles in the 'users' collection
 class FirestoreUserRepository implements UserRepository {
   final FirebaseFirestore _firestore;
   static const String _collectionName = 'users';

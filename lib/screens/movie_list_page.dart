@@ -8,6 +8,7 @@ import 'wishlist_page.dart';
 import 'summary_page.dart';
 import 'settings_page.dart';
 
+/// Main page displaying the user's movie collection
 class MovieListPage extends StatefulWidget {
   const MovieListPage({super.key});
 
@@ -85,9 +86,9 @@ class _MovieListPageState extends State<MovieListPage>
         await _movieService.deleteMovie(movieId, userId);
         await _loadMovies();
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Movie deleted')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Movie deleted')),
+          );
         }
       }
     } catch (e) {
@@ -108,17 +109,6 @@ class _MovieListPageState extends State<MovieListPage>
       appBar: AppBar(
         title: const Text('My Movies'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        leading: IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SettingsPage(),
-              ),
-            );
-          },
-          tooltip: 'Settings',
-        ),
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
@@ -136,6 +126,12 @@ class _MovieListPageState extends State<MovieListPage>
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const WishlistPage(),
+                  ),
+                );
+              } else if (value == 'settings') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsPage(),
                   ),
                 );
               }
@@ -158,6 +154,16 @@ class _MovieListPageState extends State<MovieListPage>
                     Icon(Icons.playlist_add, size: 20),
                     SizedBox(width: 12),
                     Text('Wishlist'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, size: 20),
+                    SizedBox(width: 12),
+                    Text('Settings'),
                   ],
                 ),
               ),

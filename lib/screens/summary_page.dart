@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import '../models/movie.dart';
 
+/// Page showing statistics and summaries of the movie collection
 class SummaryPage extends StatefulWidget {
   const SummaryPage({super.key});
 

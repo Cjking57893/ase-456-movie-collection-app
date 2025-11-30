@@ -1,5 +1,7 @@
+/// Physical format of the movie
 enum MovieFormat { dvd, bluray }
 
+/// Storage location categories for physical media
 enum StorageLocation {
   livingRoom,
   bedroom,
@@ -10,6 +12,7 @@ enum StorageLocation {
   other,
 }
 
+/// Represents a movie in the user's collection
 class Movie {
   final String id;
   final String userId;

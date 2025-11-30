@@ -1,5 +1,7 @@
+/// Priority level for wishlist items
 enum WishlistPriority { low, medium, high }
 
+/// Represents a movie the user wants to add to their collection
 class WishlistItem {
   final String id;
   final String movieTitle;
@@ -78,6 +80,7 @@ class WishlistItem {
   String toString() => '$movieTitle - ${priority.name} priority';
 }
 
+/// Collection of movies the user wants to acquire
 class Wishlist {
   final String id;
   final List<WishlistItem> items;

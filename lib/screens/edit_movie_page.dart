@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import '../models/movie.dart';
 
+/// Page for editing an existing movie in the collection
 class EditMoviePage extends StatefulWidget {
   final Movie movie;
 
@@ -116,10 +117,10 @@ class _EditMoviePageState extends State<EditMoviePage> {
       );
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Movie updated')),
+        );
         Navigator.of(context).pop(true);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Movie updated')));
       }
     } catch (e) {
       if (mounted) {

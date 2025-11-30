@@ -1,6 +1,7 @@
 import '../models/wishlist.dart';
 import '../repositories/user_repository.dart';
 
+/// Manages user wishlist operations for movies they want to acquire
 class WishlistService {
   final UserRepository _userRepository;
 
