@@ -27,6 +27,11 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   bool _hasImportedMovies = false;
   Timer? _debounceTimer;
   String _lastSearchQuery = '';
+  
+  // Filter variables
+  int? _minYear;
+  int? _maxYear;
+  double? _minRating;
 
   @override
   void initState() {
@@ -93,6 +98,30 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
     await _search(query);
+  }
+
+  List<TmdbMovie> get _filteredResults {
+    var filtered = _searchResults;
+
+    if (_minYear != null) {
+      filtered = filtered.where((movie) {
+        return movie.releaseYear != null && movie.releaseYear! >= _minYear!;
+      }).toList();
+    }
+
+    if (_maxYear != null) {
+      filtered = filtered.where((movie) {
+        return movie.releaseYear != null && movie.releaseYear! <= _maxYear!;
+      }).toList();
+    }
+
+    if (_minRating != null) {
+      filtered = filtered.where((movie) {
+        return movie.voteAverage >= _minRating!;
+      }).toList();
+    }
+
+    return filtered;
   }
 
   Future<void> _addToWishlist(TmdbMovie tmdbMovie) async {
@@ -191,6 +220,131 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     );
   }
 
+  Future<void> _showFilterDialog() async {
+    final minYearController = TextEditingController(
+      text: _minYear?.toString() ?? '',
+    );
+    final maxYearController = TextEditingController(
+      text: _maxYear?.toString() ?? '',
+    );
+    double? tempMinRating = _minRating;
+
+    await showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Filter Results'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Year Range',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: minYearController,
+                        decoration: const InputDecoration(
+                          labelText: 'From',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: maxYearController,
+                        decoration: const InputDecoration(
+                          labelText: 'To',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Minimum Rating',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        value: tempMinRating ?? 0,
+                        min: 0,
+                        max: 10,
+                        divisions: 20,
+                        label: tempMinRating == null
+                            ? 'Any'
+                            : tempMinRating!.toStringAsFixed(1),
+                        onChanged: (value) {
+                          setDialogState(() {
+                            tempMinRating = value > 0 ? value : null;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 50,
+                      child: Text(
+                        tempMinRating == null
+                            ? 'Any'
+                            : tempMinRating!.toStringAsFixed(1),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _minYear = null;
+                  _maxYear = null;
+                  _minRating = null;
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Clear All'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _minYear = minYearController.text.isEmpty
+                      ? null
+                      : int.tryParse(minYearController.text);
+                  _maxYear = maxYearController.text.isEmpty
+                      ? null
+                      : int.tryParse(maxYearController.text);
+                  _minRating = tempMinRating;
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Apply'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildSearchResults() {
     if (_isLoading) {
       return const Center(
@@ -218,6 +372,31 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
               ElevatedButton(
                 onPressed: _searchMovies,
                 child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final displayResults = _filteredResults;
+
+    if (displayResults.isEmpty && _searchResults.isNotEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32.0),
+          child: Column(
+            children: [
+              Icon(Icons.filter_list_off, size: 64, color: Colors.grey),
+              SizedBox(height: 16),
+              Text(
+                'No movies match your filters',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Try adjusting your filter criteria',
+                style: TextStyle(color: Colors.grey),
               ),
             ],
           ),
@@ -269,9 +448,9 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     }
 
     return ListView.builder(
-      itemCount: _searchResults.length,
+      itemCount: displayResults.length,
       itemBuilder: (context, index) {
-        final movie = _searchResults[index];
+        final movie = displayResults[index];
         return _MovieSearchTile(
           movie: movie,
           isImporting: _importingMovieId == movie.id,
@@ -294,6 +473,18 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
             Navigator.of(context).pop(_hasImportedMovies);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.filter_list,
+              color: (_minYear != null || _maxYear != null || _minRating != null)
+                  ? Colors.orange
+                  : null,
+            ),
+            onPressed: _showFilterDialog,
+            tooltip: 'Filter Results',
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -331,6 +522,42 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
               },
             ),
           ),
+          if (_minYear != null || _maxYear != null || _minRating != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Wrap(
+                spacing: 8,
+                children: [
+                  if (_minYear != null || _maxYear != null)
+                    Chip(
+                      label: Text(
+                        'Year: ${_minYear ?? '?'} - ${_maxYear ?? '?'}',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      deleteIcon: const Icon(Icons.close, size: 18),
+                      onDeleted: () {
+                        setState(() {
+                          _minYear = null;
+                          _maxYear = null;
+                        });
+                      },
+                    ),
+                  if (_minRating != null)
+                    Chip(
+                      label: Text(
+                        'Rating: ${_minRating!.toStringAsFixed(1)}+',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      deleteIcon: const Icon(Icons.close, size: 18),
+                      onDeleted: () {
+                        setState(() {
+                          _minRating = null;
+                        });
+                      },
+                    ),
+                ],
+              ),
+            ),
           Expanded(child: _buildSearchResults()),
         ],
       ),
