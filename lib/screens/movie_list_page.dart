@@ -4,6 +4,7 @@ import '../models/movie.dart';
 import 'add_movie_page.dart';
 import 'edit_movie_page.dart';
 import 'movie_search_page.dart';
+import 'wishlist_page.dart';
 
 class MovieListPage extends StatefulWidget {
   const MovieListPage({super.key});
@@ -123,6 +124,21 @@ class _MovieListPageState extends State<MovieListPage>
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const WishlistPage(),
+                ),
+              );
+            },
+            heroTag: 'wishlist',
+            backgroundColor: Colors.orange,
+            foregroundColor: Colors.white,
+            tooltip: 'My Wishlist',
+            child: const Icon(Icons.playlist_add),
+          ),
+          const SizedBox(height: 10),
           FloatingActionButton(
             onPressed: () async {
               await Navigator.of(context).push(

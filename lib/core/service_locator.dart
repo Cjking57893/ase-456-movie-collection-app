@@ -4,6 +4,7 @@ import '../repositories/movie_repository.dart';
 import '../services/auth_service.dart';
 import '../services/movie_service.dart';
 import '../services/tmdb_service.dart';
+import '../services/wishlist_service.dart';
 
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();
@@ -16,6 +17,7 @@ class ServiceLocator {
   late final AuthService _authService;
   late final MovieService _movieService;
   late final TmdbService _tmdbService;
+  late final WishlistService _wishlistService;
 
   void setup() {
     _authRepository = FirebaseAuthRepository();
@@ -30,6 +32,9 @@ class ServiceLocator {
       movieRepository: _movieRepository,
       userRepository: _userRepository,
     );
+    _wishlistService = WishlistService(
+      userRepository: _userRepository,
+    );
   }
 
   AuthService get authService => _authService;
@@ -38,4 +43,5 @@ class ServiceLocator {
   MovieRepository get movieRepository => _movieRepository;
   MovieService get movieService => _movieService;
   TmdbService get tmdbService => _tmdbService;
+  WishlistService get wishlistService => _wishlistService;
 }

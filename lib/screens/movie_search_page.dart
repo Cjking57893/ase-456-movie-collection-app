@@ -4,6 +4,7 @@ import '../config/api_config.dart';
 import '../core/service_locator.dart';
 import '../models/tmdb_models.dart';
 import '../models/movie.dart';
+import '../models/wishlist.dart';
 
 class MovieSearchPage extends StatefulWidget {
   const MovieSearchPage({super.key});
@@ -16,6 +17,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   final _searchController = TextEditingController();
   final _tmdbService = ServiceLocator().tmdbService;
   final _movieService = ServiceLocator().movieService;
+  final _wishlistService = ServiceLocator().wishlistService;
   final _authService = ServiceLocator().authService;
 
   bool _isLoading = false;
@@ -98,6 +100,42 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
     await _search(query);
+  }
+
+  Future<void> _addToWishlist(TmdbMovie tmdbMovie) async {
+    final userId = _authService.currentUser?.uid;
+    if (userId == null) {
+      _showError('User not authenticated');
+      return;
+    }
+
+    try {
+      await _wishlistService.addWishlistItem(
+        userId: userId,
+        movieTitle: tmdbMovie.title,
+        priority: WishlistPriority.medium,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('"${tmdbMovie.title}" added to wishlist'),
+            backgroundColor: Colors.green,
+            action: SnackBarAction(
+              label: 'VIEW',
+              textColor: Colors.white,
+              onPressed: () {
+                // Navigate to wishlist could be added here
+              },
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        _showError('Could not add to wishlist: ${e.toString()}');
+      }
+    }
   }
 
   Future<void> _importMovie(TmdbMovie tmdbMovie) async {
@@ -249,6 +287,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
           movie: movie,
           isImporting: _importingMovieId == movie.id,
           onImport: () => _importMovie(movie),
+          onAddToWishlist: () => _addToWishlist(movie),
         );
       },
     );
@@ -314,11 +353,13 @@ class _MovieSearchTile extends StatelessWidget {
   final TmdbMovie movie;
   final bool isImporting;
   final VoidCallback onImport;
+  final VoidCallback onAddToWishlist;
 
   const _MovieSearchTile({
     required this.movie,
     required this.isImporting,
     required this.onImport,
+    required this.onAddToWishlist,
   });
 
   @override
@@ -384,10 +425,22 @@ class _MovieSearchTile extends StatelessWidget {
                 height: 24,
                 child: CircularProgressIndicator(strokeWidth: 2),
               )
-            : IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: onImport,
-                tooltip: 'Add to Collection',
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.playlist_add),
+                    onPressed: onAddToWishlist,
+                    tooltip: 'Add to Wishlist',
+                    color: Colors.orange,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle),
+                    onPressed: onImport,
+                    tooltip: 'Add to Collection',
+                    color: Colors.green,
+                  ),
+                ],
               ),
         isThreeLine: true,
       ),

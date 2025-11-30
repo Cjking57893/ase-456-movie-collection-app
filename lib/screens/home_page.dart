@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/service_locator.dart';
 import 'movie_list_page.dart';
 import 'settings_page.dart';
+import 'wishlist_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -57,6 +58,17 @@ class HomePage extends StatelessWidget {
               title: const Text('My Movies'),
               onTap: () {
                 Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.playlist_add),
+              title: const Text('Wishlist'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WishlistPage()),
+                );
               },
             ),
             ListTile(
