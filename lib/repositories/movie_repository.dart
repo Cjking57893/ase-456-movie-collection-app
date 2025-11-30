@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/movie.dart';
 
-/// Repository interface for movie storage operations
 abstract class MovieRepository {
   Future<void> addMovie(Movie movie);
   Future<List<Movie>> getUserMovies(String userId);
@@ -10,8 +9,6 @@ abstract class MovieRepository {
   Future<Movie?> getMovie(String movieId);
 }
 
-/// Firestore implementation of MovieRepository
-/// Stores movies in the 'movies' collection
 class FirestoreMovieRepository implements MovieRepository {
   final FirebaseFirestore _firestore;
   static const String _collectionName = 'movies';
@@ -38,7 +35,8 @@ class FirestoreMovieRepository implements MovieRepository {
 
       return snapshot.docs.map((doc) => Movie.fromMap(doc.data())).toList();
     } on FirebaseException catch (e) {
-      // If ordering fails (e.g., missing index), fetch without ordering and sort in-memory
+      // Firestore throws failed-precondition when a required composite index is missing.
+      // Gracefully degrade by removing orderBy and performing an in-memory sort so UI still works.
       if (e.code == 'failed-precondition') {
         final snapshot = await _firestore
             .collection(_collectionName)

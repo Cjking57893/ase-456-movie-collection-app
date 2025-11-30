@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../core/auth_result.dart';
 
-/// Repository interface for authentication operations
-/// Abstracts Firebase Auth implementation for testability and flexibility
 abstract class AuthRepository {
   Future<AuthResult> signIn({required String email, required String password});
   Future<AuthResult> signUp({
@@ -16,8 +14,6 @@ abstract class AuthRepository {
   User? get currentUser;
 }
 
-/// Firebase implementation of AuthRepository
-/// Handles user authentication using Firebase Authentication
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _auth;
 
@@ -87,6 +83,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   String _getErrorMessage(FirebaseAuthException e) {
+    // Map Firebase error codes to user-friendly messages. Keep messages short for snackbars.
     switch (e.code) {
       case 'weak-password':
         return 'Password is too weak';
@@ -108,6 +105,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   AuthErrorType _getErrorType(FirebaseAuthException e) {
+    // Provide a semantic error type so UI can react (e.g., highlight specific field).
     switch (e.code) {
       case 'weak-password':
         return AuthErrorType.weakPassword;

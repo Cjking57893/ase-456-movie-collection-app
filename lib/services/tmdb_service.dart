@@ -3,8 +3,6 @@ import 'package:http/http.dart' as http;
 import '../config/api_config.dart';
 import '../models/tmdb_models.dart';
 
-/// Handles communication with The Movie Database (TMDB) API
-/// Provides movie search, details, and discovery functionality
 class TmdbService {
   final http.Client _client;
 
@@ -40,14 +38,15 @@ class TmdbService {
       } else if (response.statusCode == 404) {
         throw TmdbException('No movies found');
       } else {
-        throw TmdbException(
-          'Search failed with status: ${response.statusCode}',
-        );
+        // Propagate non-explicit status codes with generic message;
+        // callers differentiate via message only (simple error model kept intentionally).
+        throw TmdbException('Search failed with status: ${response.statusCode}');
       }
     } catch (e) {
       if (e is TmdbException) {
         rethrow;
       }
+      // Distinguish unexpected client/timeout errors from API failures.
       throw TmdbException('Network error: Could not search movies');
     }
   }
@@ -112,9 +111,7 @@ class TmdbService {
       } else if (response.statusCode == 401) {
         throw TmdbException('Invalid API key');
       } else {
-        throw TmdbException(
-          'Request failed with status: ${response.statusCode}',
-        );
+        throw TmdbException('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       if (e is TmdbException) {
@@ -147,9 +144,7 @@ class TmdbService {
       } else if (response.statusCode == 401) {
         throw TmdbException('Invalid API key');
       } else {
-        throw TmdbException(
-          'Request failed with status: ${response.statusCode}',
-        );
+        throw TmdbException('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       if (e is TmdbException) {
@@ -182,7 +177,6 @@ class TmdbService {
   }
 }
 
-/// Exception thrown when TMDB API operations fail
 class TmdbException implements Exception {
   final String message;
 

@@ -1,7 +1,5 @@
-/// Physical format of the movie
 enum MovieFormat { dvd, bluray }
 
-/// Storage location categories for physical media
 enum StorageLocation {
   livingRoom,
   bedroom,
@@ -12,7 +10,6 @@ enum StorageLocation {
   other,
 }
 
-/// Represents a movie in the user's collection
 class Movie {
   final String id;
   final String userId;
@@ -84,6 +81,8 @@ class Movie {
   }
 
   factory Movie.fromMap(Map<String, dynamic> map) {
+    // Defensive parsing: fall back to sensible defaults when fields are absent or malformed.
+    // Enums use .name strings; unknown values revert to first defined variants.
     return Movie(
       id: map['id'] ?? '',
       userId: map['userId'] ?? '',

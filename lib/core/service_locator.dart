@@ -6,8 +6,6 @@ import '../services/movie_service.dart';
 import '../services/tmdb_service.dart';
 import '../services/wishlist_service.dart';
 
-/// Centralized dependency injection container for managing service instances
-/// Uses singleton pattern to provide global access to services throughout the app
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();
   factory ServiceLocator() => _instance;
@@ -21,8 +19,6 @@ class ServiceLocator {
   late final TmdbService _tmdbService;
   late final WishlistService _wishlistService;
 
-  /// Initializes all repositories and services
-  /// Must be called once during app startup
   void setup() {
     _authRepository = FirebaseAuthRepository();
     _userRepository = FirestoreUserRepository();

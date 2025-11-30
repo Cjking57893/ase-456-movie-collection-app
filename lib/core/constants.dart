@@ -1,4 +1,3 @@
-/// Application-wide constants for configuration and messages
 class AppConstants {
   static const String appName = 'Movie Collection';
 

@@ -5,8 +5,6 @@ import '../models/wishlist.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/user_repository.dart';
 
-/// Manages user authentication and account creation
-/// Coordinates between Firebase Auth and user profile storage in Firestore
 class AuthService {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
@@ -61,6 +59,8 @@ class AuthService {
       );
 
       try {
+        // Persist profile document after auth account creation.
+        // If this fails we sign the user out to avoid a half-created account.
         await _userRepository.createUser(user);
       } catch (e) {
         await _authRepository.signOut();

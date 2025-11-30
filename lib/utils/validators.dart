@@ -1,6 +1,5 @@
 import '../core/constants.dart';
 
-/// Form validation utilities
 class Validators {
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
