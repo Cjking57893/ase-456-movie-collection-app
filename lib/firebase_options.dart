@@ -2,6 +2,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
@@ -29,47 +30,47 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCtvYEbe_lJxPQE0E5_yXAjNmmwqYCnkxk',
-    appId: '1:249286272069:web:1c63e491d311d08fd3af2c',
-    messagingSenderId: '249286272069',
-    projectId: 'movie-collection-app-cbe7f',
-    authDomain: 'movie-collection-app-cbe7f.firebaseapp.com',
-    storageBucket: 'movie-collection-app-cbe7f.firebasestorage.app',
+  static FirebaseOptions get web => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_WEB'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID_WEB'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC9IwWY_1qvo10rU9YfvslOKvDxhoTGPgM',
-    appId: '1:249286272069:android:0d4870fc0a7ebccad3af2c',
-    messagingSenderId: '249286272069',
-    projectId: 'movie-collection-app-cbe7f',
-    storageBucket: 'movie-collection-app-cbe7f.firebasestorage.app',
+  static FirebaseOptions get android => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_ANDROID'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID_ANDROID'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDSTjHitzQ9M-e_OlS4-1ngms7kWmw4NUU',
-    appId: '1:249286272069:ios:9941e5778b6f1a98d3af2c',
-    messagingSenderId: '249286272069',
-    projectId: 'movie-collection-app-cbe7f',
-    storageBucket: 'movie-collection-app-cbe7f.firebasestorage.app',
-    iosBundleId: 'com.example.movieCollectionApp',
+  static FirebaseOptions get ios => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID_IOS'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
+    iosBundleId: dotenv.env['FIREBASE_IOS_BUNDLE_ID'] ?? '',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDSTjHitzQ9M-e_OlS4-1ngms7kWmw4NUU',
-    appId: '1:249286272069:ios:9941e5778b6f1a98d3af2c',
-    messagingSenderId: '249286272069',
-    projectId: 'movie-collection-app-cbe7f',
-    storageBucket: 'movie-collection-app-cbe7f.firebasestorage.app',
-    iosBundleId: 'com.example.movieCollectionApp',
+  static FirebaseOptions get macos => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_IOS'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID_IOS'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
+    iosBundleId: dotenv.env['FIREBASE_IOS_BUNDLE_ID'] ?? '',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCtvYEbe_lJxPQE0E5_yXAjNmmwqYCnkxk',
-    appId: '1:249286272069:web:690e6e598ec3d22ad3af2c',
-    messagingSenderId: '249286272069',
-    projectId: 'movie-collection-app-cbe7f',
-    authDomain: 'movie-collection-app-cbe7f.firebaseapp.com',
-    storageBucket: 'movie-collection-app-cbe7f.firebasestorage.app',
+  static FirebaseOptions get windows => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY_WINDOWS'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID_WINDOWS'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
   );
 }
