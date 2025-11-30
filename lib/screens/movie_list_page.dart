@@ -6,6 +6,7 @@ import 'edit_movie_page.dart';
 import 'movie_search_page.dart';
 import 'wishlist_page.dart';
 import 'summary_page.dart';
+import 'settings_page.dart';
 
 class MovieListPage extends StatefulWidget {
   const MovieListPage({super.key});
@@ -107,11 +108,16 @@ class _MovieListPageState extends State<MovieListPage>
       appBar: AppBar(
         title: const Text('My Movies'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SettingsPage(),
+              ),
+            );
+          },
+          tooltip: 'Settings',
         ),
         actions: [
           PopupMenuButton<String>(
