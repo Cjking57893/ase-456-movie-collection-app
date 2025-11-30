@@ -4,7 +4,8 @@
 
 ✅ **Total Unit Tests: 99 (All Passing)**  
 ✅ **Total Regression Tests: 13 (All Passing)**  
-**Grand Total: 112 Tests**
+✅ **Total Integration Tests: 12 (All Passing)**  
+**Grand Total: 124 Tests**
 
 ### Test Breakdown
 
@@ -58,6 +59,26 @@
   - Serialization roundtrip (toMap/fromMap)
   - Nullable field handling
 
+### Integration Tests (12 tests)
+
+#### Model Integration (6 tests)
+- `test/integration/model_integration_test.dart`
+  - User movie collection add/remove
+  - Wishlist/collection independence
+  - Movie-User ownership
+  - Wishlist priority filtering
+  - Profile update data preservation
+  - Complete user workflow
+
+#### Serialization Integration (6 tests)
+- `test/integration/serialization_integration_test.dart`
+  - Movie full round-trip serialization
+  - User nested model serialization
+  - Wishlist complex items
+  - Enum serialization consistency
+  - DateTime preservation
+  - Empty collection handling
+
 ## Test Structure
 
 ```
@@ -72,7 +93,9 @@ test/
 │   ├── auth_result_pattern_matching_test.dart
 │   ├── movie_model_immutability_test.dart
 │   └── README.md
-├── integration/         # Integration tests (placeholder)
+├── integration/         # Integration tests (12 tests) ✅
+│   ├── model_integration_test.dart
+│   ├── serialization_integration_test.dart
 │   └── README.md
 └── acceptance/          # Acceptance/E2E tests (placeholder)
     └── README.md
@@ -93,6 +116,11 @@ flutter test test/unit
 ### Run all regression tests
 ```bash
 flutter test test/regression
+```
+
+### Run all integration tests
+```bash
+flutter test test/integration
 ```
 
 ### Run specific test file
@@ -137,8 +165,8 @@ Generated mock files are located in the same directory as test files with `.mock
 
 ## Future Test Categories
 
-### Integration Tests (Planned)
-- Test interactions between services and repositories
+### Service Integration Tests (Planned)
+- Test Service + Repository interactions
 - Test Firebase operations with emulator
 - Test widget + service interactions
 
@@ -149,16 +177,19 @@ Generated mock files are located in the same directory as test files with `.mock
 
 ## Code Coverage Goals
 
-Current focus is on unit and regression test coverage. Integration and acceptance tests will be added as the application matures.
+Current focus is on unit, integration, and regression test coverage. Service-level integration and acceptance tests will be added as the application matures.
 
 Target coverage areas:
-- ✅ All models (100% coverage)
-- ✅ All services (business logic coverage)
+- ✅ All models (100% unit + integration coverage)
+- ✅ Model interactions and workflows
+- ✅ Serialization/deserialization
+- ✅ All services (business logic unit coverage)
 - ✅ Validators and utilities (100% coverage)
 - ✅ Core types (AuthResult, etc.)
 - ✅ Regression tests for critical bugs
+- 🔄 Service + Repository integration (to be added)
 - 🔄 Repositories (to be added)
-- 🔄 Screens/Widgets (to be added with integration tests)
+- 🔄 Screens/Widgets (to be added with acceptance tests)
 
 ## Regression Test Policy
 
