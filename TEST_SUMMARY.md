@@ -1,8 +1,10 @@
-# Unit Test Summary
+# Test Summary
 
 ## Test Coverage
 
-✅ **Total Unit Tests: 99 (All Passing)**
+✅ **Total Unit Tests: 99 (All Passing)**  
+✅ **Total Regression Tests: 13 (All Passing)**  
+**Grand Total: 112 Tests**
 
 ### Test Breakdown
 
@@ -39,6 +41,23 @@
   - Display name validation
   - Required field validation
 
+### Regression Tests (13 tests)
+
+#### AuthResult Pattern Matching (7 tests)
+- `test/regression/auth_result_pattern_matching_test.dart`
+  - Pattern matching with sealed classes
+  - AuthSuccess and AuthFailure discrimination
+  - AuthErrorType enum completeness
+  - Field access verification
+
+#### Movie Model Immutability (6 tests)
+- `test/regression/movie_model_immutability_test.dart`
+  - Immutability verification with copyWith
+  - List field copying (not referencing)
+  - Enum stability (`MovieFormat`, `StorageLocation`)
+  - Serialization roundtrip (toMap/fromMap)
+  - Nullable field handling
+
 ## Test Structure
 
 ```
@@ -49,9 +68,11 @@ test/
 │   ├── services/        # Service layer tests
 │   ├── utils/           # Utility function tests
 │   └── README.md        # Unit test documentation
-├── integration/         # Integration tests (placeholder)
+├── regression/          # Regression tests (13 tests) ✅
+│   ├── auth_result_pattern_matching_test.dart
+│   ├── movie_model_immutability_test.dart
 │   └── README.md
-├── regression/          # Regression tests (placeholder)
+├── integration/         # Integration tests (placeholder)
 │   └── README.md
 └── acceptance/          # Acceptance/E2E tests (placeholder)
     └── README.md
@@ -59,9 +80,19 @@ test/
 
 ## Running Tests
 
+### Run all tests
+```bash
+flutter test
+```
+
 ### Run all unit tests
 ```bash
 flutter test test/unit
+```
+
+### Run all regression tests
+```bash
+flutter test test/regression
 ```
 
 ### Run specific test file
@@ -106,29 +137,38 @@ Generated mock files are located in the same directory as test files with `.mock
 
 ## Future Test Categories
 
-### Integration Tests
+### Integration Tests (Planned)
 - Test interactions between services and repositories
 - Test Firebase operations with emulator
 - Test widget + service interactions
 
-### Regression Tests
-- Test specific bug fixes to prevent regressions
-- Reference issue/bug numbers
-- Keep historical bug scenarios
-
-### Acceptance Tests
+### Acceptance Tests (Planned)
 - Test complete user workflows
 - Test end-to-end scenarios
 - May use `integration_test` package
 
 ## Code Coverage Goals
 
-Current focus is on unit test coverage. Integration and acceptance tests will be added as the application matures.
+Current focus is on unit and regression test coverage. Integration and acceptance tests will be added as the application matures.
 
 Target coverage areas:
 - ✅ All models (100% coverage)
 - ✅ All services (business logic coverage)
 - ✅ Validators and utilities (100% coverage)
 - ✅ Core types (AuthResult, etc.)
+- ✅ Regression tests for critical bugs
 - 🔄 Repositories (to be added)
 - 🔄 Screens/Widgets (to be added with integration tests)
+
+## Regression Test Policy
+
+All significant bug fixes should have corresponding regression tests to ensure the bug doesn't reappear. Current regression tests cover:
+
+1. **AuthResult Pattern Matching**: Ensures sealed class pattern matching works correctly with Dart 3
+2. **Movie Model Immutability**: Verifies immutability, serialization, and enum stability
+
+Future regression tests should be added for:
+- ScaffoldMessenger timing issues (if fixed)
+- Firebase error handling improvements
+- Navigation bugs
+- Authentication edge cases
