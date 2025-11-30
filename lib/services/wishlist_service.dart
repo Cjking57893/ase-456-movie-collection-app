@@ -26,6 +26,15 @@ class WishlistService {
       throw Exception('User not found');
     }
 
+    // Check if movie already exists in wishlist
+    final isDuplicate = user.wishlist.items.any(
+      (item) => item.movieId != null && item.movieId == movieId,
+    );
+
+    if (isDuplicate) {
+      throw Exception('This movie is already in your wishlist');
+    }
+
     final itemId = DateTime.now().millisecondsSinceEpoch.toString();
     final item = WishlistItem(
       id: itemId,

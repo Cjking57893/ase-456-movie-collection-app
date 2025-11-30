@@ -54,14 +54,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
       return;
     }
 
-    if (trimmedQuery.length < 2 || trimmedQuery == _lastSearchQuery) {
-      if (trimmedQuery.length < 2) {
-        setState(() {
-          _searchResults = [];
-          _errorMessage = null;
-          _isLoading = false;
-        });
-      }
+    if (trimmedQuery == _lastSearchQuery) {
       return;
     }
 
@@ -113,6 +106,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
       await _wishlistService.addWishlistItem(
         userId: userId,
         movieTitle: tmdbMovie.title,
+        movieId: tmdbMovie.id.toString(),
         priority: WishlistPriority.medium,
       );
 
@@ -121,13 +115,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
           SnackBar(
             content: Text('"${tmdbMovie.title}" added to wishlist'),
             backgroundColor: Colors.green,
-            action: SnackBarAction(
-              label: 'VIEW',
-              textColor: Colors.white,
-              onPressed: () {
-                // Navigate to wishlist could be added here
-              },
-            ),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -180,6 +168,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
           SnackBar(
             content: Text('Added "${details.title}" to your collection'),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -313,7 +302,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Type 2+ characters to search...',
+                hintText: 'Search for movies...',
                 prefixIcon: _isLoading
                     ? const Padding(
                         padding: EdgeInsets.all(12.0),
